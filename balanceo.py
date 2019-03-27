@@ -28,7 +28,7 @@ resultados = [None]*numero_grupos
 
 for i in range(1,numero_grupos):
 
-    data = grupos_suma(cargas,total)    
+    data = grupos_suma(cargas,total,margen)    
     seen = set()
     result = []
     for d in data:                      # Se eliminan los grupos que solo sean permutaciones de otro. 
