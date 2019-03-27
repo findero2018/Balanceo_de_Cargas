@@ -1,0 +1,5 @@
+Estos archivos sirven para calcular el balanceo de cargas.
+
+Actualmente, gruposDeCargas.py es el único que funciona correctamente. Tuve que definir una función varias veces en lugar sólo llamarla por un error que áun no entiendo.
+agrupador.py y balanceo.py serán las versiones finales, que harán lo mismo que gruposDeCargas.py
+
