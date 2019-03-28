@@ -26,9 +26,10 @@ numero_grupos = 3
 
 resultados = [None]*numero_grupos
 
-for i in range(1,numero_grupos):
-
-    data = grupos_suma(cargas,total,margen)
+for i in range(0,numero_grupos):
+    
+    data = grupos_suma(cargas,total,margen,[],[]) # Hay que pasar listas vacías cada vez que se llama a la función.
+    
     seen = set()
     result = []
     for d in data:                      # Se eliminan los grupos que solo sean permutaciones de otro. 
@@ -45,6 +46,6 @@ print(f'Cargas: {cargas_original}')
 print()
 print("Grupos:")
 
-for i in range(1,numero_grupos):
+for i in range(0,numero_grupos):
     print(resultados[i])
     print(f'Suma: {round(sum(resultados[i]),2)}')
