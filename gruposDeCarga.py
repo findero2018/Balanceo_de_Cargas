@@ -1,138 +1,50 @@
+#**************************************************
+#PropÃ³sito:  A partir de una lista, produce grupos del mismo
+#            tamaÃ±o cuya suma total es aproximadamente la mima.
+#Inputs:     Se especifica la lista de cargas y cuÃ¡ntos grupos de necesitan.
+#Regresa:    Imprime los grupos formados y su suma.
+#Utiliza:    agrupador.py
+#**************************************************
 
-#Forma grupos de carga parecidos entre sí 
-import sys
 import numpy as np
 import random
+from agrupador import grupos_suma
 
-cargas = [40,38,55,50]
-#aleatorios = [round(random.gauss(25, 6),1) for _ in range(20)]
+cargas = [40,38,55,50] # Cargas de pruba introducidas manualmente
+#aleatorios = [round(random.gauss(25, 6),1) for _ in range(20)] # Cargas de prueba producidas aleatoriamente
+
 aleatorios = [32.0, 27.4, 24.1, 33.7, 32.3, 30.1, 30.2, 27.7, 33.1, 33.5, 17.0, 20.8, 15.7, 38.2, 28.6, 21.1, 21.5, 18.2, 21.9, 20.1]
 cargas.extend(aleatorios)
 
-cargas = np.array(cargas)
+cargas = np.array(cargas)       # Esta es la lista de cargas. 
+cargas_original = cargas
+margen = 2      # Margen de variaciÃ³n en la suma de los grupos.                        
+total = round(sum(cargas)/3)    # El valor deseado para la suma de los grupos. 
+numero_grupos = 3
 
-total = round(sum(cargas)/3)
+# Se crean los grupos
 
-margen = 2
+resultados = [None]*numero_grupos
 
-def subset_sum(numbers, target, partial=[], grupos=[]):
-    s = sum(partial)
+for i in range(1,numero_grupos):
 
-    # check if the partial sum is equals to target
-    if s >= target-margen and s <= target+margen and len(partial)==8: 
-#        print(f'Sum {partial} ={target}')
-        grupos.append(partial)
-#        print(len(grupos))
+    data = grupos_suma(cargas,total,margen)
+    seen = set()
+    result = []
+    for d in data:                      # Se eliminan los grupos que solo sean permutaciones de otro. 
+        if frozenset(d) not in seen:
+            result.append(d)
+            seen.add(frozenset(d))
         
-    if s >= target:
-        return  # if we reach the number why bother to continue
+    resultados[i] = result[0]                 # Se van a crean muchos grupos que cumplan con la suma, solo se toma el primero
 
-    for i in range(len(numbers)):
-        n = numbers[i]
-        remaining = numbers[i+1:]
-        subset_sum(remaining, target, partial + [n]) 
-    
-    return grupos
-
-#def subset_sum(numbers, target, partial=[], partial_sum=0):
-#    if partial_sum >= target-margen and partial_sum <= target+margen:
-#        print(f'Sum {partial} ={partial_sum}')
-#        yield partial
-#    if partial_sum > target+2:
-#        return
-#    for i, n in enumerate(numbers):
-#        remaining = numbers[i + 1:]
-#        yield from subset_sum(remaining, target, partial + [n], partial_sum + n)
-
-
-data = subset_sum(cargas,total)
-seen = set()
-result = []
-for d in data:
-    if frozenset(d) not in seen:
-        result.append(d)
-        seen.add(frozenset(d))
-    
-primero = result[0]
-
-restante = np.setxor1d(list(cargas),primero)
-
-grupos = []
-
-def subset_sum(numbers, target, partial=[], grupos=[]):
-    s = sum(partial)
-
-    # check if the partial sum is equals to target
-    if s >= target-margen and s <= target+margen and len(partial)==8: 
-#        print(f'Sum {partial} ={target}')
-        grupos.append(partial)
-#        print(len(grupos))
-        
-    if s >= target:
-        return  # if we reach the number why bother to continue
-
-    for i in range(len(numbers)):
-        n = numbers[i]
-        remaining = numbers[i+1:]
-        subset_sum(remaining, target, partial + [n]) 
-    
-    return grupos
-
-data = subset_sum(restante,total)
-seen = set()
-result = []
-for d in data:
-    if frozenset(d) not in seen:
-        result.append(d)
-        seen.add(frozenset(d))
-
-segundo = result[0]
-
-restante = np.setxor1d(list(restante),segundo)
-
-grupos = []
-
-def subset_sum(numbers, target, partial=[], grupos=[]):
-    s = sum(partial)
-
-    # check if the partial sum is equals to target
-    if s >= target-margen and s <= target+margen and len(partial)==8: 
-#        print(f'Sum {partial} ={target}')
-        grupos.append(partial)
-#        print(len(grupos))
-        
-    if s >= target:
-        return  # if we reach the number why bother to continue
-
-    for i in range(len(numbers)):
-        n = numbers[i]
-        remaining = numbers[i+1:]
-        subset_sum(remaining, target, partial + [n]) 
-    
-    return grupos
-
-data = subset_sum(restante,total)
-seen = set()
-result = []
-for d in data:
-    if frozenset(d) not in seen:
-        result.append(d)
-        seen.add(frozenset(d))
-
-tercero = result[0]
+    cargas = np.setxor1d(list(cargas),resultados[i])    # Cargas sin acomodar aÃºn.
 
 print()
-print(f'Cargas: {cargas}')
+print(f'Cargas: {cargas_original}')
 print()
 print("Grupos:")
-print(primero)
-print(f'Suma: {round(sum(primero),2)}')
-print(segundo)
-print(f'Suma: {round(sum(segundo),2)}')
-print(tercero)
-print(f'Suma: {round(sum(tercero),2)}')
 
-
-
-
-
+for i in range(1,numero_grupos):
+    print(resultados[i])
+    print(f'Suma: {round(sum(resultados[i]),2)}')
