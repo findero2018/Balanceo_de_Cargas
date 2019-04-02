@@ -1,5 +1,22 @@
 Estos archivos sirven para calcular el balanceo de cargas.
 
-Actualmente, gruposDeCargas.py es el único que funciona correctamente. Tuve que definir una función varias veces en lugar sólo llamarla por un error que áun no entiendo.
-agrupador.py y balanceo.py serán las versiones finales, que harán lo mismo que gruposDeCargas.py
+Los siguientes dos archivos agrupan cargas pero no minimizan los cambios:
+
+ agrupador.py contiene la función que agrupa una lsita de cargas en tres grupos con la misma suma
+
+ balnaceo.py es el archivo donde se introducen las cargas e imprime los grupos
+
+ gruposDeCarga.py es una primera versión de los archivos anteriores
+
+
+Los siguientes tres archivos balancean la carga tomando en cuenta la conección actual del centro de cargas, buscando minimizar 
+las modificaciones
+
+ balanceadorCSV.py toma valores de las senales para determinar la carga a balancear
+
+ balanceoMinimizado.py produce el balanceo tomadno en cuenta minimzar los cambios de conecciones.
+
+ balanceoGrafico.py produce una imagen con las instrucciones para balancear el centro de cargas.
+
+ 
 
